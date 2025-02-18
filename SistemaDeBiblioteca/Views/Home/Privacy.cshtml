@@ -1,0 +1,45 @@
+﻿@model SistemaDeBiblioteca.Models.Livro
+
+@{
+    ViewData["Title"] = "Adicionar Livro";
+}
+
+
+<h1 class="titulo1">ADICIONAR LIVRO</h1>
+
+
+<form method="post" asp-controller="Biblioteca" asp-action="Adicionar">
+    <div class="card p-4 shadow-lg" style="background-color: rgba(255, 255, 255, 0.95);">
+    <div class="nomeLivro">
+        <label for="Nome">Nome do Livro</label>
+        <input type="text" name="Nome" id="Nome" placeholder="Digite o nome do livro" class="form-control" required />
+    </div>
+    <div class="nomeAutor">
+        <label for="Autor">Autor</label>
+        <input type="text" name="Autor" id="Autor" placeholder="Digite o nome do autor" class="form-control" required />
+    </div>
+    <div class="btnAdd">
+    <button type="submit" class=" btn btn-primary mt-3">Adicionar Livro</button>
+    </div>
+    </div>
+</form>
+
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div id="mensagem" class="alert alert-success mt-3">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div id="mensagemErro" class="alert alert-danger mt-3">
+        @TempData["MensagemErro"]
+    </div>
+}
+
+
+
+
+<script src="~/js/site.js"></script>

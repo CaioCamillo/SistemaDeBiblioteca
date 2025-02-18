@@ -1,0 +1,85 @@
+﻿@model List<SistemaDeBiblioteca.Models.Livro>
+
+<h1 class="row justify-content-center titulo1">BUSCAR LIVRO</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card p-4 shadow-lg" style="background-color: rgba(255, 255, 255, 0.95);">
+                <form method="post" asp-controller="Biblioteca" asp-action="Pesquisar">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            name="nome" 
+                            class="form-control form-control-lg border-primary" 
+                            placeholder="Pesquisar por título ou autor"
+                        >
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary btn-lg px-4"
+                        >
+                            <i class="bi bi-search me-2"></i>Pesquisar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive mt-4">
+        <table class="table table-custom table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Nome</th>
+                    <th>Autor</th>
+                    <th>Reservado</th>
+                    <th>Reservador</th>
+                    <th>Data da Reserva</th>
+                    <th>Reservar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var livro in Model)
+                {
+                    <tr>
+                        <td>@livro.Nome</td>
+                        <td>@livro.Autor</td>
+                        <td class="fw-bold">@(livro.Reservado ? "✓" : "✕")</td>
+                        <td>@(livro.Reservado ? livro.Reservador : "-")</td>
+                        <td>@(livro.DataReserva.HasValue ? livro.DataReserva.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+                        <td>
+                            @if (!livro.Reservado)
+                            {
+                                <form method="post" asp-controller="Biblioteca" asp-action="ReservarLivro" class="d-inline">
+                                    <div class="input-group">
+                                        <input type="hidden" name="nomeLivro" value="@livro.Nome" />
+                                        <input type="text" 
+                                               name="nomeUsuario" 
+                                               placeholder="Seu nome" 
+                                               class="form-control form-control-sm" 
+                                               required
+                                               style="max-width: 120px;" />
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi bi-bookmark-check">✓</i>
+                                        </button>
+                                    </div>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    @if (ViewBag.PesquisaRealizada != null && ViewBag.PesquisaRealizada)
+    {
+        <div class="alert alert-warning mt-3" role="alert">
+            Nenhum livro encontrado.
+        </div>
+    }
+}
